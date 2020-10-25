@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import Auth from "./components/Auth";
+import Entities from "./components/Entities";
+import Layout from "./components/Layout";
+import auth from "./reducers/auth";
+
+import entity from "./reducers/entity";
+import transaction from "./reducers/transaction";
+import { prepareData } from "./utils";
 
 function App() {
+  const [{ userId }, handleSubmit] = React.useReducer(auth, {});
+  const [entities, entityDispatcher] = React.useReducer(entity, []);
+  const [transactions, transactionDispatcher] = React.useReducer(
+    transaction,
+    []
+  );
+  const [data, setData] = React.useState({});
+
+  useEffect(() => {
+    setData(prepareData(entities, transactions));
+  }, [userId, entities, transactions]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Auth loggedIn={!!userId} handleSubmit={handleSubmit} />
+      <Layout userId={userId}>
+        <Entities
+          data={data}
+          entityDispatcher={entityDispatcher}
+          transactionDispatcher={transactionDispatcher}
+        />
+      </Layout>
     </div>
   );
 }
