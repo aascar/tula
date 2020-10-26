@@ -6,6 +6,8 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import { Transaction } from "../../../services/transaction";
 import { Paper } from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import { PAYMENT_MODES } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -23,16 +25,27 @@ const useStyles = makeStyles((theme) => ({
 export default function NewTransaction({ handleAdd }) {
   const classes = useStyles();
   const [time, setTime] = React.useState(Date.now());
-  const [credit, setCredit] = React.useState(0);
-  const [debit, setDebit] = React.useState(0);
+  const [cost, setCost] = React.useState(0);
+  const [paid, setPaid] = React.useState(0);
+  const [paymentMode, setPaymentMode] = React.useState(PAYMENT_MODES.CASH);
   const [remarks, setRemarks] = React.useState("");
+
+  const reset = () => {
+    setTime(Date.now());
+    setCost(0);
+    setPaid(0);
+    setPaymentMode(PAYMENT_MODES.CASH);
+    setRemarks("");
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     handleAdd(
-      (entityId) => new Transaction(entityId, credit, debit, remarks, time)
+      (entityId) =>
+        new Transaction(entityId, cost, paid, paymentMode, remarks, time)
     );
     handleOpen();
+    reset();
   };
 
   const [open, setOpen] = React.useState(false);
@@ -45,9 +58,31 @@ export default function NewTransaction({ handleAdd }) {
       {open && (
         <Paper className={classes.paper}>
           <Grid container spacing={1}>
-            <Grid item sm={4} xs={12}>
+            <Grid item sm={6} xs={12}>
               <TextField
-                id="debit"
+                id="cost"
+                label="Cost"
+                value={cost}
+                onChange={(e) => setCost(Number(e.target.value))}
+                type="number"
+                fullWidth
+                size="small"
+              />
+            </Grid>
+            <Grid item sm={6} xs={12}>
+              <TextField
+                id="paid"
+                label="Paid"
+                value={paid}
+                onChange={(e) => setPaid(Number(e.target.value))}
+                type="number"
+                fullWidth
+                size="small"
+              />
+            </Grid>
+            <Grid item sm={6} xs={12}>
+              <TextField
+                id="time"
                 label="Time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
@@ -56,27 +91,21 @@ export default function NewTransaction({ handleAdd }) {
                 size="small"
               />
             </Grid>
-            <Grid item sm={4} xs={12}>
+            <Grid item sm={6} xs={12}>
               <TextField
-                id="credit"
-                label="Credit (+)"
-                value={credit}
-                onChange={(e) => setCredit(Number(e.target.value))}
-                type="number"
+                id="payment_mode"
+                select
+                label="Payment Mode"
+                value={paymentMode}
+                onChange={(e) => setPaymentMode(e.target.value)}
                 fullWidth
-                size="small"
-              />
-            </Grid>
-            <Grid item sm={4} xs={12}>
-              <TextField
-                id="debit"
-                label="Debit (-)"
-                value={debit}
-                onChange={(e) => setDebit(Number(e.target.value))}
-                type="number"
-                fullWidth
-                size="small"
-              />
+              >
+                {Object.keys(PAYMENT_MODES).map((o) => (
+                  <MenuItem key={o} value={o}>
+                    {o}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField

@@ -18,10 +18,18 @@ export default function NewEntity({ handleAdd }) {
   const [name, setName] = React.useState("");
   const [opening_balance, setBalance] = React.useState(0);
   const [description, setDescription] = React.useState("");
+
+  const reset = () => {
+    setName("");
+    setBalance(0);
+    setDescription("");
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    handleAdd(new Entity(name, description, opening_balance));
+    handleAdd(new Entity(name, description, -opening_balance));
     handleModal();
+    reset();
   };
 
   const [open, setOpen] = React.useState(false);

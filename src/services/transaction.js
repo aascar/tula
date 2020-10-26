@@ -17,16 +17,17 @@ export class Transaction {
   id;
   entityId;
   time;
-  credit;
-  debit;
+  cost;
+  paid;
+  payment_mode;
   remarks;
-  constructor(entityId, credit, debit, remarks, time = Date.now()) {
-    debugger;
+  constructor(entityId, cost, paid, payment_mode, remarks, time = Date.now()) {
     this.id = getRandomId();
     this.time = +new Date(time);
     this.entityId = entityId;
-    this.credit = credit;
-    this.debit = debit;
+    this.cost = cost;
+    this.paid = paid;
+    this.payment_mode = payment_mode;
     this.remarks = remarks ?? "";
   }
 }

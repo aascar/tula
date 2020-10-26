@@ -60,6 +60,7 @@ export default function Modal({ children, open, title, actions, handleClose }) {
         aria-labelledby="customized-dialog-title"
         open={open}
         onClose={handleClose ?? (() => null)}
+        TransitionProps={{ unmountOnExit: true }}
       >
         {title && (
           <DialogTitle id="customized-dialog-title" onClose={handleClose}>

@@ -15,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Amount({ amount }) {
+export default function Amount({ amount, neutral = false }) {
   const classes = useStyles();
   return (
     <Typography
       className={cx(classes.root, {
-        [classes.debit]: amount < 0,
-        [classes.credit]: amount > 0,
+        [classes.debit]: !neutral && amount < 0,
+        [classes.credit]: !neutral && amount > 0,
       })}
       component="span"
     >

@@ -4,10 +4,10 @@ export default class Service {
   _persistKey = "_a_t_data";
   data;
   userId;
-  constructor(userId) {
+  constructor(userId, data) {
     this.userId = userId;
     this._persistKey = this.userId + this._persistKey;
-    this.data = this.retrieve();
+    this.data = data ?? this.retrieve();
   }
 
   isExists = (id) => !!this.data.find((en) => en.id === id);

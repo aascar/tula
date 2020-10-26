@@ -14,18 +14,18 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },
-  heading: {
-    flexBasis: "33.33%",
-    flexShrink: 0,
-    textAlign: "right",
-  },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  header: {
+    "&>.MuiGrid-item:not(:first-child)": {
+      textAlign: "right",
+    },
+  },
 }));
 
-function Transaction({ id, time, credit, debit, remarks }) {
+function Transaction({ id, time, cost, paid, payment_mode, remarks }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -44,13 +44,23 @@ function Transaction({ id, time, credit, debit, remarks }) {
         aria-controls="content"
         id={id}
       >
-        <Typography>{new Date(time).toLocaleString()}</Typography>
-        <div className={classes.heading}>
-          <Amount amount={credit} />
-        </div>
-        <div className={classes.heading}>
-          <Amount amount={-debit} />
-        </div>
+        <Grid container spacing={1} className={classes.header}>
+          <Grid item sm={3} xs={6}>
+            <Typography>{new Date(time).toLocaleString()}</Typography>
+          </Grid>
+          <Grid item sm={3} xs={6}>
+            <Amount amount={cost} neutral />
+          </Grid>
+          <Grid item sm={3} xs={6}>
+            <Amount amount={-paid} />
+            <Typography component="span" variant="caption">
+              ({payment_mode})
+            </Typography>
+          </Grid>
+          <Grid item sm={3} xs={6}>
+            <Amount amount={cost - paid} />
+          </Grid>
+        </Grid>
       </AccordionSummary>
       <AccordionDetails>
         <Typography className={classes.secondaryHeading}>{remarks}</Typography>

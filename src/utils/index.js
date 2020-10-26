@@ -8,11 +8,20 @@ export const prepareData = (entities, transactions) => {
   };
   console.log(entities, transactions);
   if (Array.isArray(entities) && Array.isArray(transactions)) {
-    data.entities = entities.map((en) => {
-      data.balance += en.balance;
+    debugger;
+    data.entities = [...entities].map((entity) => {
+      const en = { ...entity };
+      const trans = transactions.filter((o) => {
+        if (o.entityId === en.id) {
+          en.balance += o.cost - o.paid;
+          return true;
+        }
+        return false;
+      });
+      data.balance += +en.balance;
       return {
         ...en,
-        transactions: transactions.filter((o) => o.entityId === en.id),
+        transactions: trans,
       };
     });
   }

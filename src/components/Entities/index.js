@@ -114,7 +114,7 @@ export default function Entities({ data, dispatch, transactionProps }) {
         <NewEntity handleAdd={handleAdd} />
       </Grid>
       <Grid item sm={12}>
-        {data.entities.map((d) => {
+        {data.entities?.map((d) => {
           return (
             <Entity key={d.id} {...d} transactionProps={transactionProps} />
           );

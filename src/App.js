@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Auth from "./components/Auth";
 import Entities from "./components/Entities";
 import Layout from "./components/Layout";
+import useStore from "./hooks/useStore";
 import auth from "./reducers/auth";
 
 import crud from "./reducers/crud";
@@ -14,8 +15,12 @@ function App() {
   const [data, setData] = React.useState({});
 
   useEffect(() => {
-    setData(prepareData(entities, transactions));
+    if (userId) {
+      setData(prepareData(entities, transactions));
+    }
   }, [userId, entities, transactions]);
+
+  useStore(userId, entities, transactions);
 
   return (
     <div className="App">
