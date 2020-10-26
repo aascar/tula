@@ -6,6 +6,7 @@ export const prepareData = (entities, transactions) => {
     balance: 0,
     entities: [],
   };
+  console.log(entities, transactions);
   if (Array.isArray(entities) && Array.isArray(transactions)) {
     data.entities = entities.map((en) => {
       data.balance += en.balance;

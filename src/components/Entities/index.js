@@ -5,10 +5,11 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Divider, Grid, Paper } from "@material-ui/core";
+import { Divider, Grid } from "@material-ui/core";
 import NewEntity from "./NewEntity";
 import Transactions from "./Transactions";
 import Amount from "../Amount";
+import { CRUD } from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,7 @@ function Entity({
   balance,
   opening_balance,
   transactions,
-  transactionDispatcher,
+  transactionProps,
 }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -55,7 +56,11 @@ function Entity({
   };
 
   return (
-    <Accordion expanded={expanded} onChange={handleChange}>
+    <Accordion
+      expanded={expanded}
+      onChange={handleChange}
+      TransitionProps={{ unmountOnExit: true }}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="content"
@@ -82,7 +87,7 @@ function Entity({
             <Transactions
               entityId={id}
               data={transactions}
-              dispatch={transactionDispatcher}
+              {...transactionProps}
             />
           </Grid>
         </Grid>
@@ -91,21 +96,19 @@ function Entity({
   );
 }
 
-export default function Entities({
-  data,
-  entityDispatcher,
-  transactionDispatcher,
-}) {
+export default function Entities({ data, dispatch, transactionProps }) {
   const classes = useStyles();
 
   const handleAdd = (entity) => {
-    entityDispatcher({ type: "ADD", entity });
+    dispatch({ type: CRUD.CREATE, payload: entity });
   };
 
   return (
-    <Grid container className={classes.root}>
+    <Grid container className={classes.root} spacing={2}>
       <Grid item sm={9} className={classes.rightAlign}>
-        <Amount amount={data.balance} />
+        <Typography component="div" variant="subtitle1">
+          Total: <Amount amount={data.balance} />
+        </Typography>
       </Grid>
       <Grid item sm={3}>
         <NewEntity handleAdd={handleAdd} />
@@ -113,11 +116,7 @@ export default function Entities({
       <Grid item sm={12}>
         {data.entities.map((d) => {
           return (
-            <Entity
-              key={d.id}
-              {...d}
-              transactionDispatcher={transactionDispatcher}
-            />
+            <Entity key={d.id} {...d} transactionProps={transactionProps} />
           );
         })}
       </Grid>

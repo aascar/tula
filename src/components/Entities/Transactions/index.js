@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Grid } from "@material-ui/core";
 import NewTransaction from "./NewTransaction";
 import Amount from "../../Amount";
+import { CRUD } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +34,11 @@ function Transaction({ id, time, credit, debit, remarks }) {
   };
 
   return (
-    <Accordion expanded={expanded} onChange={handleChange}>
+    <Accordion
+      expanded={expanded}
+      onChange={handleChange}
+      TransitionProps={{ unmountOnExit: true }}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="content"
@@ -59,7 +64,7 @@ export default function Transactions({ entityId, data, dispatch }) {
 
   const handleAdd = (cb) => {
     const transaction = cb(entityId);
-    dispatch({ type: "ADD", transaction });
+    dispatch({ type: CRUD.CREATE, payload: transaction });
   };
 
   return (

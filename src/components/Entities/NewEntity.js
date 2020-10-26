@@ -16,23 +16,12 @@ const useStyles = makeStyles((theme) => ({
 export default function NewEntity({ handleAdd }) {
   const classes = useStyles();
   const [name, setName] = React.useState("");
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-
   const [opening_balance, setBalance] = React.useState(0);
-  const handleBalanceChange = (event) => {
-    setBalance(event.target.value);
-  };
-
   const [description, setDescription] = React.useState("");
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     handleAdd(new Entity(name, description, opening_balance));
+    handleModal();
   };
 
   const [open, setOpen] = React.useState(false);
@@ -58,7 +47,7 @@ export default function NewEntity({ handleAdd }) {
               id="name"
               label="Name"
               value={name}
-              onChange={handleNameChange}
+              onChange={(e) => setName(e.target.value)}
               fullWidth
             />
           </Grid>
@@ -67,7 +56,7 @@ export default function NewEntity({ handleAdd }) {
               id="balance"
               label="Opening Balance"
               value={opening_balance}
-              onChange={handleBalanceChange}
+              onChange={(e) => setBalance(Number(e.target.value))}
               type="number"
               fullWidth
             />
@@ -77,7 +66,7 @@ export default function NewEntity({ handleAdd }) {
               id="description"
               label="Description"
               value={description}
-              onChange={handleDescriptionChange}
+              onChange={(e) => setDescription(e.target.value)}
               type="text"
               multiline
               rows={2}

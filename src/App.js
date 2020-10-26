@@ -4,17 +4,13 @@ import Entities from "./components/Entities";
 import Layout from "./components/Layout";
 import auth from "./reducers/auth";
 
-import entity from "./reducers/entity";
-import transaction from "./reducers/transaction";
+import crud from "./reducers/crud";
 import { prepareData } from "./utils";
 
 function App() {
   const [{ userId }, handleSubmit] = React.useReducer(auth, {});
-  const [entities, entityDispatcher] = React.useReducer(entity, []);
-  const [transactions, transactionDispatcher] = React.useReducer(
-    transaction,
-    []
-  );
+  const [entities, entityDispatcher] = React.useReducer(crud, []);
+  const [transactions, transactionDispatcher] = React.useReducer(crud, []);
   const [data, setData] = React.useState({});
 
   useEffect(() => {
@@ -27,8 +23,8 @@ function App() {
       <Layout userId={userId}>
         <Entities
           data={data}
-          entityDispatcher={entityDispatcher}
-          transactionDispatcher={transactionDispatcher}
+          dispatch={entityDispatcher}
+          transactionProps={{ dispatch: transactionDispatcher }}
         />
       </Layout>
     </div>
