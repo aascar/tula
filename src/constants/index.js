@@ -3,6 +3,7 @@ export const CRUD = {
   READ: "READ",
   UPDATE: "UPDATE",
   DELETE: "DELETE",
+  BULK_CREATE: "BULK_CREATE",
 };
 
 export const PAYMENT_MODES = {

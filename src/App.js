@@ -20,7 +20,13 @@ function App() {
     }
   }, [userId, entities, transactions]);
 
-  useStore(userId, entities, transactions);
+  useStore(
+    userId,
+    entities,
+    transactions,
+    entityDispatcher,
+    transactionDispatcher
+  );
 
   return (
     <div className="App">

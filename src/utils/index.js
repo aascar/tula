@@ -6,9 +6,7 @@ export const prepareData = (entities, transactions) => {
     balance: 0,
     entities: [],
   };
-  console.log(entities, transactions);
   if (Array.isArray(entities) && Array.isArray(transactions)) {
-    debugger;
     data.entities = [...entities].map((entity) => {
       const en = { ...entity };
       const trans = transactions.filter((o) => {

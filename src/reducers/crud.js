@@ -3,6 +3,9 @@ export default function crud(state, action) {
   const { type } = action;
   let returnState = state;
   switch (type) {
+    case CRUD.BULK_CREATE:
+      returnState = [...state, ...action.payload];
+      break;
     case CRUD.CREATE:
       returnState = [...state, action.payload];
       break;

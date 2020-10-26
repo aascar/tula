@@ -4,6 +4,12 @@ import Service from "./index";
 export default class TransactionService extends Service {
   _persistKey = "_a_t_transactions";
 
+  constructor(userId) {
+    super(userId);
+    this._persistKey = this.userId + this._persistKey;
+    this.data = this.retrieve();
+  }
+
   create = (transaction) => {
     if (transaction instanceof Transaction) {
       if (this.isExists(transaction.id)) {

@@ -4,6 +4,12 @@ import Service from "./index";
 export default class EntityService extends Service {
   _persistKey = "_a_t_entities";
 
+  constructor(userId) {
+    super(userId);
+    this._persistKey = this.userId + this._persistKey;
+    this.data = this.retrieve();
+  }
+
   create = (entity) => {
     if (entity instanceof Entity) {
       if (this.isExists(entity.id)) {
