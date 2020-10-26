@@ -20,12 +20,13 @@ export class Transaction {
   credit;
   debit;
   remarks;
-  constructor(entityId, credit, debit, remarks) {
+  constructor(entityId, credit, debit, remarks, time = Date.now()) {
+    debugger;
     this.id = getRandomId();
-    this.time = Date.now();
+    this.time = +new Date(time);
     this.entityId = entityId;
     this.credit = credit;
     this.debit = debit;
-    this.remarks = remarks;
+    this.remarks = remarks ?? "";
   }
 }

@@ -7,15 +7,16 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Grid } from "@material-ui/core";
 import NewTransaction from "./NewTransaction";
+import Amount from "../../Amount";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15),
     flexBasis: "33.33%",
     flexShrink: 0,
+    textAlign: "right",
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
@@ -38,11 +39,17 @@ function Transaction({ id, time, credit, debit, remarks }) {
         aria-controls="content"
         id={id}
       >
-        <Typography className={classes.heading}>{credit}</Typography>
-        <Typography className={classes.heading}>{debit}</Typography>
-        <Typography className={classes.secondaryHeading}>{remarks}</Typography>
+        <Typography>{new Date(time).toLocaleString()}</Typography>
+        <div className={classes.heading}>
+          <Amount amount={credit} />
+        </div>
+        <div className={classes.heading}>
+          <Amount amount={-debit} />
+        </div>
       </AccordionSummary>
-      <AccordionDetails></AccordionDetails>
+      <AccordionDetails>
+        <Typography className={classes.secondaryHeading}>{remarks}</Typography>
+      </AccordionDetails>
     </Accordion>
   );
 }

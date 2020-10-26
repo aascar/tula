@@ -5,9 +5,9 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import { Entity } from "../../services/entity";
+import Modal from "../Modal";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
   grid: {
     textAlign: "right",
   },
@@ -32,47 +32,65 @@ export default function NewEntity({ handleAdd }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    handleAdd(new Entity(name, opening_balance));
+    handleAdd(new Entity(name, description, opening_balance));
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const handleModal = () => {
+    setOpen(!open);
   };
 
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <div>
+      <Modal
+        open={open}
+        actions={
+          <Button onClick={handleSubmit} color="primary">
+            Submit
+          </Button>
+        }
+        title="New Entity"
+        handleClose={handleModal}
+      >
+        <Grid container spacing={1}>
+          <Grid item sm={6}>
+            <TextField
+              id="name"
+              label="Name"
+              value={name}
+              onChange={handleNameChange}
+              fullWidth
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <TextField
+              id="balance"
+              label="Opening Balance"
+              value={opening_balance}
+              onChange={handleBalanceChange}
+              type="number"
+              fullWidth
+            />
+          </Grid>
+          <Grid item sm={12}>
+            <TextField
+              id="description"
+              label="Description"
+              value={description}
+              onChange={handleDescriptionChange}
+              type="text"
+              multiline
+              rows={2}
+              fullWidth
+            />
+          </Grid>
+        </Grid>
+      </Modal>
       <Grid container spacing={1}>
-        <Grid item sm={6}>
-          <TextField
-            id="name"
-            label="Name"
-            value={name}
-            onChange={handleNameChange}
-            fullWidth
-          />
-        </Grid>
-        <Grid item sm={6}>
-          <TextField
-            id="balance"
-            label="Opening Balance"
-            value={opening_balance}
-            onChange={handleBalanceChange}
-            type="number"
-            fullWidth
-          />
-        </Grid>
-        <Grid item sm={12}>
-          <TextField
-            id="description"
-            label="Description"
-            value={description}
-            onChange={handleDescriptionChange}
-            type="text"
-            multiline
-            rows={2}
-            fullWidth
-          />
-        </Grid>
-        <Grid item sm={12}></Grid>
         <Grid item sm={12} className={classes.grid}>
           <Button
-            onClick={handleSubmit}
+            variant="contained"
+            onClick={handleModal}
             color="primary"
             startIcon={<AddIcon />}
           >
@@ -80,6 +98,6 @@ export default function NewEntity({ handleAdd }) {
           </Button>
         </Grid>
       </Grid>
-    </form>
+    </div>
   );
 }
